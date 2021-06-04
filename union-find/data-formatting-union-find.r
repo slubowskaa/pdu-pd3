@@ -3,8 +3,8 @@ library(dplyr)
 # Wczytuję ramki Posts i Users z odpowiedniej bazy danych. W ten sposób mogę
 # napisać jeden kod do wszystkich baz danych i podmieniać jedynie ścieżki lub
 # pliki znajdujące się pod daną ścieżką.
-Posts <- read.csv("E:/RStudio/Trzeci projekt/bazy danych/Posts-Bioinformatics.csv")
-Users <- read.csv("E:/RStudio/Trzeci projekt/bazy danych/Users-Bioinformatics.csv")
+Posts <- read.csv("../data/Posts-Bioinformatics.csv")
+Users <- read.csv("../data/Users-Bioinformatics.csv")
 
   
 # Biorę tylko dane potrzebne do algorytmu. Bazy danych są duże i jest potrzeba
@@ -27,8 +27,8 @@ UsersUseful <- (
 # szybkie, ale w R i tak bym czekał wieki aż się wykona, więc zdecydowałem, że
 # rozdzielę projekt między kilka różnych języków programowania.
 
-write.csv(PostsUseful,"E:/RStudio/Trzeci projekt/wyniki/Edges.csv",
+write.csv(PostsUseful,"../data/wyniki/Edges.csv",
           row.names = FALSE)
-write.csv(UsersUseful,"E:/RStudio/Trzeci projekt/wyniki/Vertices.csv",
+write.csv(UsersUseful,"../data/wyniki/Vertices.csv",
           row.names = FALSE)
 ?write.csv
