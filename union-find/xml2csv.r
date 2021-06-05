@@ -1,22 +1,22 @@
 library(XML)
 library(dplyr)
+library(here)
+
+
+
 
 xml2csv <- function(input,output){
   xmlParse(input) %>% getNodeSet(path = "//row") %>%
   XML:::xmlAttrsToDataFrame() %>% write.csv(output)
 }
 
-xml2csv("../data/gaming/Posts.xml",
-        "../data/Posts-Gaming.csv")
-xml2csv("../data/gaming/Users.xml",
-        "../data/Users-Gaming.csv")
 
-xml2csv("../data/chess/Posts.xml",
-        "../data/Posts-Chess.csv")
-xml2csv("../data/chess/Users.xml",
-        "../data/Users-Chess.csv")
+forum_names <- c("gaming", "chess", "bioinformatics")
 
-xml2csv("../data/bioinformatics/Posts.xml",
-        "../data/Posts-Bioinformatics.csv")
-xml2csv("../data/bioinformatics/Users.xml",
-        "../data/Users-Bioinformatics.csv")
+
+for (forum_name in forum_names) {
+  xml2csv(here("data", forum_name, "Posts.xml"),
+          here("data", paste("Posts-", forum_name, ".csv", sep="")))
+  xml2csv(here("data", forum_name, "Users.xml"),
+          here("data", paste("Users-", forum_name, ".csv", sep="")))
+}
