@@ -3,16 +3,12 @@ library(dplyr)
 library(here)
 
 
-
-
 xml2csv <- function(input,output){
   xmlParse(input) %>% getNodeSet(path = "//row") %>%
   XML:::xmlAttrsToDataFrame() %>% write.csv(output)
 }
 
-
 forum_names <- c("gaming", "chess", "bioinformatics")
-
 
 for (forum_name in forum_names) {
   xml2csv(here("data", forum_name, "Posts.xml"),
