@@ -1,14 +1,8 @@
 #include <iostream>
 #include <fstream>
-
 using namespace std;
-
 //Szacowanie z góry liczby użytkowników forum na którym zapuszczam F&U.
 #define USERS_COUNT 280000
-//Dodatkowe define'y, by nie szukać ścieżek w kodzie.
-#define INPUT_EDGES "E:/RStudio/Trzeci projekt/wyniki/Edges.csv"
-#define INPUT_VERTICES "E:/RStudio/Trzeci projekt/wyniki/Vertices.csv"
-#define OUTPUT_CSV "E:/RStudio/Trzeci projekt/wyniki/UsersFU-Bioinformatics.csv"
 
 int repr[USERS_COUNT];
 int tree_size[USERS_COUNT];
@@ -21,7 +15,6 @@ void dataInit(){
         is_active_user[i] = false;
     }
 }
-
 //FUNKCJE F&U:
 //Find z optymalizacją kompresji.
 int findRepr(int x){
@@ -47,14 +40,12 @@ void unionVertices(int v1,int v2){
     //wierzchołków będących reprezentantami.
     tree_size[repr1] += tree_size[repr2];
 }
-
 //Metoda przerabiająca dane o krawędziach w grafie użytkowników na
 //strukturę F&U.
-void loadEdges(){
+void loadEdges(string input_edges){
     int v1,v2,it;
     string line;
-    ifstream file(INPUT_EDGES);
-
+    ifstream file(input_edges);
     if(file.is_open()){
         //Muszę zignorować linię zawierającą nazwy kolumn.
         getline(file,line);
@@ -84,7 +75,6 @@ void loadEdges(){
                 }
                 it++;
             }
-
             //Aktualizuję strukturę F&U o połączenie między v1 i v2.
             unionVertices(v1,v2);
         }
@@ -93,11 +83,10 @@ void loadEdges(){
     else cout << "Nie udało się otworzyć pliku.";
 }
 //Metoda ładująca dane o poprawnych id użytkowników.
-void loadVertices(){
+void loadVertices(string input_vertices){
     int id,it;
     string line;
-    ifstream file(INPUT_VERTICES);
-
+    ifstream file(input_vertices);
     if(file.is_open()){
         //Muszę zignorować linię zawierającą nazwy kolumn.
         getline(file,line);
@@ -121,7 +110,6 @@ void loadVertices(){
     }
     else cout << "Nie udało się otworzyć pliku.";
 }
-
 //Metoda kompresująca dane ze struktury F&U do formy do dalszej analizy.
 //Mogę sobie pozwolić na to, bo wciąż ma to złożoność lepszą niż v*logv.
 void compressTree(){
@@ -130,7 +118,6 @@ void compressTree(){
         tree_size[i] = tree_size[repr[i]];
     }
 }
-
 //Bonusowa metoda, zliczająca liczbę społeczności i zwracająca na wyjście
 //standardowe trochę wstępnych informacji o nich.
 void countCommunities(){
@@ -147,9 +134,8 @@ void countCommunities(){
     cout << "Total number of communities: " << community_count <<
         "(including " << loner_count << " isolated users)\n";
 }
-
-void saveData(){
-    ofstream file(OUTPUT_CSV);
+void saveData(string output_csv){
+    ofstream file(output_csv);
     if(file.is_open()){
         file << "Id,Representative,GroupPopulation\n";
         for(int i=0;i<USERS_COUNT;i++)
@@ -159,17 +145,30 @@ void saveData(){
     }
     else cout << "Nie udało się otworzyć pliku.";
 }
-
-int main(){
+int main(int argc, char *argv[]){
     //"Magiczna linijka."
     ios_base::sync_with_stdio(0);
 
+    string input_edges = "";
+    string input_vertices = "";
+    string output_csv = "";
+    // Argumenty programu
+    if (argc != 4) {
+        cout << "Niepoprawne parametry programu";
+        return 0;
+    } else {
+        input_edges = argv[1];
+        input_vertices = argv[2];
+        output_csv = argv[3];
+        cout << input_edges << endl;
+        cout << input_vertices << endl;
+        cout << output_csv;
+    }
     dataInit();
-    loadEdges();
-    loadVertices();
+    loadEdges(input_edges);
+    loadVertices(input_vertices);
     compressTree();
     countCommunities();
-    saveData();
-
+    saveData(output_csv);
     return 0;
 }
