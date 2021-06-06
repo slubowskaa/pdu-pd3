@@ -8,7 +8,7 @@ xml2csv <- function(input,output){
   XML:::xmlAttrsToDataFrame() %>% write.csv(output)
 }
 
-forum_names <- c("gaming", "chess", "bioinformatics")
+forum_names <- c("vegetarianism", "pets", "parenting", "cooking", "bitcoin", "astronomy", "literature", "sports")
 
 for (forum_name in forum_names) {
   xml2csv(here("data", forum_name, "Posts.xml"),
