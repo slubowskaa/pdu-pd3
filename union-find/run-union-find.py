@@ -2,7 +2,7 @@ import subprocess
 
 EXEC_FILE = "union-find.exe"
 
-forum_names = ["gaming", "chess", "bioinformatics"]
+forum_names =  ["vegetarianism", "pets", "parenting", "cooking", "bitcoin", "astronomy", "literature", "sports"]
 
 if __name__ == "__main__":
     for f_name in forum_names:
@@ -14,4 +14,3 @@ if __name__ == "__main__":
                 f"../data/wyniki/Communities-{f_name}.csv"
             ]
         )
-  
